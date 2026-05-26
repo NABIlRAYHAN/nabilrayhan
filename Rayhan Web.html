@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nabil Rayhan — SQA Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c1: #FF3CAC;
+  --c2: #784BA0;
+  --c3: #2B86C5;
+  --c4: #00F5D4;
+  --c5: #FFE14D;
+  --bg: #08080F;
+  --bg2: #0F0F1A;
+  --text: #F0EFFF;
+  --muted: #7A7A9A;
+  --display: 'Bebas Neue', sans-serif;
+  --body: 'Plus Jakarta Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--body);overflow-x:hidden;
+  cursor:none;
+}
+
+/* ===== CURSOR ===== */
+#cur{position:fixed;width:16px;height:16px;border-radius:50%;
+  background:var(--c1);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);mix-blend-mode:screen;
+  transition:transform .15s,width .2s,height .2s;
+}
+#cur2{position:fixed;width:44px;height:44px;border-radius:50%;
+  border:1.5px solid rgba(255,60,172,.4);pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);transition:all .25s cubic-bezier(.23,1,.32,1);
+}
+body:has(a:hover) #cur{width:28px;height:28px;background:var(--c4);}
+body:has(a:hover) #cur2{width:56px;height:56px;border-color:var(--c4);}
+
+/* ===== PROGRESS ===== */
+#prog{position:fixed;top:0;left:0;height:3px;z-index:999;
+  background:linear-gradient(90deg,var(--c1),var(--c3),var(--c4));
+  width:0%;transition:width .1s;}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 3rem;
+  background:rgba(8,8,15,.7);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.nav-logo{
+  font-family:var(--display);font-size:1.6rem;letter-spacing:.06em;
+  background:linear-gradient(135deg,var(--c1),var(--c3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  font-size:.7rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+  text-decoration:none;position:relative;
+  transition:color .2s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:2px;background:var(--c1);transform:scaleX(0);
+  transform-origin:left;transition:transform .3s;
+}
+.nav-links a:hover{color:var(--text);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-badge{
+  display:flex;align-items:center;gap:8px;
+  padding:.4rem 1rem;border-radius:50px;
+  background:rgba(0,245,212,.08);border:1px solid rgba(0,245,212,.2);
+  font-size:.62rem;font-weight:600;letter-spacing:.12em;color:var(--c4);
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--c4);
+  animation:ping 2s ease infinite;}
+@keyframes ping{0%,100%{box-shadow:0 0 0 0 rgba(0,245,212,.5)}
+  50%{box-shadow:0 0 0 8px rgba(0,245,212,0)}}
+
+/* ===== HERO ===== */
+#hero{
+  min-height:100vh;display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:0 3rem;position:relative;overflow:hidden;
+  gap:2rem;
+}
+.hero-left{position:relative;z-index:2;}
+.hero-right{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  height:100%;
+}
+
+/* === SQA VISUAL PANEL === */
+.sqa-panel{
+  position:relative;width:480px;height:480px;
+  opacity:0;animation:fadeUp .9s 1.2s forwards;
+}
+/* Central orb */
+.sqa-orb{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#ff6ec7,#784BA0 50%,#2B86C5);
+  box-shadow:0 0 60px rgba(255,60,172,.5),0 0 120px rgba(255,60,172,.2),inset 0 0 40px rgba(255,255,255,.1);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:10;
+  animation:orbPulse 3s ease-in-out infinite;
+}
+@keyframes orbPulse{
+  0%,100%{box-shadow:0 0 60px rgba(255,60,172,.5),0 0 120px rgba(255,60,172,.2);}
+  50%{box-shadow:0 0 80px rgba(255,60,172,.7),0 0 160px rgba(255,60,172,.3),0 0 220px rgba(43,134,197,.15);}
+}
+.orb-label{font-family:var(--display);font-size:.75rem;letter-spacing:.15em;color:rgba(255,255,255,.9);}
+.orb-pct{font-family:var(--display);font-size:2.4rem;color:#fff;line-height:1;}
+
+/* Rings */
+.sqa-ring{
+  position:absolute;top:50%;left:50%;
+  border-radius:50%;border-style:solid;
+  transform:translate(-50%,-50%);
+}
+.ring1{
+  width:220px;height:220px;
+  border:1px dashed rgba(255,60,172,.3);
+  animation:spinCW 12s linear infinite;
+}
+.ring2{
+  width:320px;height:320px;
+  border:1px solid rgba(0,245,212,.15);
+  animation:spinCCW 18s linear infinite;
+}
+.ring3{
+  width:430px;height:430px;
+  border:1px dashed rgba(43,134,197,.12);
+  animation:spinCW 28s linear infinite;
+}
+@keyframes spinCW{to{transform:translate(-50%,-50%) rotate(360deg);}}
+@keyframes spinCCW{to{transform:translate(-50%,-50%) rotate(-360deg);}}
+
+/* Orbit nodes */
+.orbit-node{
+  position:absolute;top:50%;left:50%;
+  transform-origin:0 0;
+  pointer-events:none;
+}
+.orbit-chip{
+  position:absolute;
+  padding:.32rem .85rem;border-radius:50px;
+  font-size:.58rem;font-weight:700;letter-spacing:.1em;
+  white-space:nowrap;backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(10,10,20,.7);
+  color:var(--text);
+  transform:translate(-50%,-50%);
+  animation:chipFloat 3s ease-in-out infinite;
+}
+@keyframes chipFloat{
+  0%,100%{transform:translate(-50%,-50%) scale(1);}
+  50%{transform:translate(-50%,-55%) scale(1.05);}
+}
+
+/* Floating metric cards */
+.sqa-metric{
+  position:absolute;
+  padding:.7rem 1.1rem;border-radius:14px;
+  background:rgba(12,12,24,.85);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
+  display:flex;flex-direction:column;gap:2px;
+  animation:floatCard 4s ease-in-out infinite;
+}
+@keyframes floatCard{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+.sm-val{font-family:var(--display);font-size:1.6rem;line-height:1;}
+.sm-lbl{font-size:.55rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+
+/* Particle dots scattered */
+.sqa-dot{
+  position:absolute;border-radius:50%;
+  animation:dotBlink 2s ease-in-out infinite;
+}
+@keyframes dotBlink{0%,100%{opacity:.2;}50%{opacity:.8;}}
+
+/* Code snippet floating card */
+.code-card{
+  position:absolute;right:-20px;bottom:30px;
+  background:rgba(8,8,20,.9);
+  border:1px solid rgba(0,245,212,.2);
+  border-radius:16px;padding:1rem 1.2rem;
+  font-size:.58rem;font-family:'Courier New',monospace;
+  line-height:1.7;color:rgba(255,255,255,.5);
+  width:200px;
+  animation:floatCard 5s 1s ease-in-out infinite;
+  backdrop-filter:blur(12px);
+}
+.code-card .ck{color:var(--c1);}
+.code-card .cv{color:var(--c4);}
+.code-card .cc{color:var(--c3);}
+.code-card .cn{color:var(--c5);}
+
+/* Activity ring (donut) */
+.donut-wrap{
+  position:absolute;top:-10px;right:10px;
+  width:90px;height:90px;
+  animation:floatCard 6s 2s ease-in-out infinite;
+}
+.donut-wrap svg{overflow:visible;}
+
+@keyframes orb1{from{transform:rotate(0deg) translateX(110px) rotate(0deg);}to{transform:rotate(360deg) translateX(110px) rotate(-360deg);}}
+@keyframes orb2{from{transform:rotate(0deg) translateX(160px) rotate(0deg);}to{transform:rotate(360deg) translateX(160px) rotate(-360deg);}}
+@keyframes orb3{from{transform:rotate(0deg) translateX(215px) rotate(0deg);}to{transform:rotate(360deg) translateX(215px) rotate(-360deg);}}
+
+@media(max-width:900px){
+  #hero{grid-template-columns:1fr;padding-top:5rem;}
+  .hero-right{display:none;}
+}
+.hero-eyebrow{
+  font-size:.65rem;font-weight:700;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--c4);
+  display:flex;align-items:center;gap:12px;margin-bottom:1.2rem;
+  opacity:0;transform:translateY(20px);
+  animation:fadeUp .7s .3s forwards;
+}
+.hero-eyebrow-line{width:40px;height:1px;background:var(--c4);}
+
+.hero-h1{
+  font-family:var(--display);
+  font-size:clamp(5rem,14vw,13rem);
+  line-height:.88;letter-spacing:-.01em;
+  opacity:0;transform:scale(.85) translateY(40px);
+  animation:heroIn .9s .5s cubic-bezier(.22,1,.36,1) forwards;
+}
+.hero-h1 .word1{
+  display:block;
+  background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,.4));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-h1 .word2{
+  display:block;
+  -webkit-text-stroke:2px var(--c1);
+  color:transparent;
+  filter:drop-shadow(0 0 30px rgba(255,60,172,.3));
+}
+@keyframes heroIn{to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUpDelay{to{opacity:1;transform:translateY(0)}}
+
+.hero-sub{
+  max-width:560px;font-size:.95rem;line-height:1.8;color:var(--muted);
+  margin-top:2rem;
+  opacity:0;transform:translateY(25px);
+  animation:fadeUp .7s .9s forwards;
+}
+.hero-sub strong{color:var(--c4);font-weight:700;}
+
+.hero-ctas{
+  display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;
+  opacity:0;transform:translateY(25px);
+  animation:fadeUp .7s 1.1s forwards;
+}
+.btn-glow{
+  padding:.9rem 2.4rem;font-family:var(--body);
+  font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  color:#fff;border:none;border-radius:50px;cursor:none;
+  text-decoration:none;position:relative;overflow:hidden;
+  box-shadow:0 0 30px rgba(255,60,172,.35);
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-glow::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--c4),var(--c3));
+  opacity:0;transition:opacity .3s;
+}
+.btn-glow:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(255,60,172,.5);}
+.btn-glow:hover::before{opacity:1;}
+.btn-glow span{position:relative;z-index:1;}
+.btn-outline{
+  padding:.9rem 2.4rem;font-family:var(--body);
+  font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  background:transparent;color:var(--text);
+  border:1.5px solid rgba(255,255,255,.15);border-radius:50px;
+  cursor:none;text-decoration:none;
+  transition:border-color .2s,background .2s,transform .2s;
+}
+.btn-outline:hover{border-color:var(--c4);background:rgba(0,245,212,.06);transform:translateY(-3px);}
+
+.hero-stats{
+  display:flex;gap:3rem;margin-top:4rem;
+  opacity:0;transform:translateY(25px);
+  animation:fadeUp .7s 1.3s forwards;
+}
+.hstat{display:flex;flex-direction:column;gap:3px;}
+.hstat-n{
+  font-family:var(--display);font-size:3rem;line-height:1;
+  background:linear-gradient(135deg,var(--c4),var(--c3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hstat-l{font-size:.58rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+
+/* HERO BG */
+.hero-blob{
+  position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;
+}
+.blob1{width:600px;height:600px;background:rgba(255,60,172,.12);
+  top:-200px;right:-200px;animation:blobMove 8s ease-in-out infinite alternate;}
+.blob2{width:400px;height:400px;background:rgba(43,134,197,.1);
+  bottom:-100px;right:200px;animation:blobMove 10s ease-in-out infinite alternate-reverse;}
+.blob3{width:300px;height:300px;background:rgba(0,245,212,.07);
+  top:40%;left:-100px;animation:blobMove 12s ease-in-out infinite alternate;}
+@keyframes blobMove{to{transform:translate(30px,-30px) scale(1.1);}}
+
+/* FLOATING SHAPES */
+.shape{position:absolute;pointer-events:none;opacity:.15;}
+.shape-ring{
+  width:300px;height:300px;border:1px solid var(--c1);border-radius:50%;
+  top:10%;right:8%;animation:spinSlow 20s linear infinite;
+}
+.shape-ring2{
+  width:180px;height:180px;border:1px solid var(--c4);border-radius:50%;
+  top:10%;right:calc(8% + 60px);opacity:.08;
+  animation:spinSlow 15s linear infinite reverse;
+}
+.shape-sq{
+  width:80px;height:80px;border:1px solid var(--c5);
+  top:20%;left:5%;animation:floatUpDown 6s ease-in-out infinite;
+  transform:rotate(45deg);
+}
+@keyframes spinSlow{to{transform:rotate(360deg);}}
+@keyframes floatUpDown{0%,100%{transform:rotate(45deg) translateY(0);}50%{transform:rotate(45deg) translateY(-20px);}}
+
+/* ===== SECTION SHARED ===== */
+.section{padding:8rem 3rem;position:relative;}
+.section-alt{background:var(--bg2);}
+.sec-label{
+  font-size:.6rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--c1);
+  display:flex;align-items:center;gap:10px;margin-bottom:.8rem;
+}
+.sec-label::before{content:'';width:32px;height:2px;background:var(--c1);border-radius:2px;}
+.sec-title{
+  font-family:var(--display);
+  font-size:clamp(2.5rem,5vw,4.5rem);
+  line-height:1;letter-spacing:.01em;
+  background:linear-gradient(135deg,#fff,rgba(255,255,255,.5));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:4rem;
+}
+
+/* ===== ABOUT ===== */
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.about-visual{
+  position:relative;display:flex;justify-content:center;align-items:center;
+  height:400px;
+}
+.about-ring-outer{
+  width:320px;height:320px;border-radius:50%;
+  border:1px solid rgba(255,60,172,.2);
+  position:absolute;
+  animation:spinSlow 30s linear infinite;
+}
+.about-ring-inner{
+  width:220px;height:220px;border-radius:50%;
+  border:1px solid rgba(0,245,212,.2);
+  position:absolute;animation:spinSlow 20s linear infinite reverse;
+}
+.about-center{
+  width:140px;height:140px;border-radius:50%;
+  background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:2.5rem;color:#fff;
+  box-shadow:0 0 60px rgba(255,60,172,.4);
+  position:relative;z-index:1;
+}
+.about-orbit{
+  position:absolute;width:100%;height:100%;
+  animation:spinSlow 15s linear infinite;
+}
+.orbit-dot{
+  position:absolute;width:10px;height:10px;border-radius:50%;
+  top:0;left:50%;transform:translateX(-50%);
+}
+.about-info p{
+  font-size:.88rem;line-height:1.9;color:var(--muted);margin-bottom:1.5rem;
+}
+.about-info strong{color:var(--c4);}
+.info-chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem;}
+.chip{
+  padding:.4rem 1rem;border-radius:50px;
+  font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  color:var(--text);transition:background .2s,border-color .2s,transform .2s;
+}
+.chip:hover{background:rgba(0,245,212,.08);border-color:var(--c4);transform:translateY(-3px);color:var(--c4);}
+
+/* ===== SKILLS ===== */
+.skills-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
+.skill-card{
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:20px;padding:2rem;
+  position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+  transform-style:preserve-3d;
+}
+.skill-card::before{
+  content:'';position:absolute;inset:0;border-radius:20px;
+  background:linear-gradient(135deg,transparent,rgba(255,60,172,.04));
+  opacity:0;transition:opacity .3s;
+}
+.skill-card:hover{transform:translateY(-8px) rotateX(2deg);border-color:rgba(255,60,172,.25);
+  box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 30px rgba(255,60,172,.1);}
+.skill-card:hover::before{opacity:1;}
+.sk-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;margin-bottom:1.2rem;
+}
+.sk-title{
+  font-size:.75rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;margin-bottom:1.2rem;color:var(--text);
+}
+.sk-pills{display:flex;flex-wrap:wrap;gap:.5rem;}
+.sk-pill{
+  padding:.3rem .8rem;border-radius:50px;
+  font-size:.6rem;font-weight:600;letter-spacing:.08em;
+  transition:transform .15s;
+}
+.sk-pill:hover{transform:scale(1.08);}
+.pink-bg{background:rgba(255,60,172,.1);border:1px solid rgba(255,60,172,.2);color:var(--c1);}
+.teal-bg{background:rgba(0,245,212,.08);border:1px solid rgba(0,245,212,.18);color:var(--c4);}
+.blue-bg{background:rgba(43,134,197,.1);border:1px solid rgba(43,134,197,.2);color:var(--c3);}
+.yellow-bg{background:rgba(255,225,77,.08);border:1px solid rgba(255,225,77,.18);color:var(--c5);}
+.purple-bg{background:rgba(120,75,160,.15);border:1px solid rgba(120,75,160,.3);color:#B47EFF;}
+
+/* ===== EXPERIENCE ===== */
+.exp-wrap{width:100%;display:flex;flex-direction:column;gap:1.5rem;}
+.exp-card{
+  position:relative;
+  display:grid;grid-template-columns:260px 1fr;
+  gap:0;width:100%;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  overflow:hidden;
+  transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s,border-color .4s;
+}
+.exp-card::before{
+  content:'';position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,60,172,.04),transparent 55%);
+  opacity:0;transition:opacity .4s;pointer-events:none;z-index:0;
+}
+.exp-card:hover{
+  border-color:rgba(255,60,172,.3);
+  box-shadow:0 8px 60px rgba(255,60,172,.1),0 0 0 1px rgba(255,60,172,.06);
+  transform:translateY(-4px);
+}
+.exp-card:hover::before{opacity:1;}
+
+.exp-left{
+  padding:2.5rem 2rem 2.5rem 2.5rem;
+  border-right:1px solid rgba(255,255,255,.07);
+  display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem;
+  background:rgba(255,255,255,.015);
+  position:relative;z-index:1;
+}
+.exp-left::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--c1),var(--c2),var(--c3));
+  border-radius:4px 0 0 4px;
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .55s cubic-bezier(.22,1,.36,1);
+}
+.exp-card:hover .exp-left::before{transform:scaleY(1);}
+
+.exp-period{
+  display:inline-flex;align-items:center;
+  font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:.3rem .9rem;border-radius:50px;width:fit-content;
+  background:rgba(0,245,212,.07);border:1px solid rgba(0,245,212,.18);
+  color:var(--c4);margin-bottom:1rem;
+}
+.exp-role{
+  font-family:var(--display);font-size:2rem;
+  color:var(--text);letter-spacing:.02em;line-height:1.1;margin-bottom:.4rem;
+}
+.exp-co{font-size:.72rem;color:var(--muted);line-height:1.6;}
+.exp-tags{display:flex;flex-wrap:wrap;gap:.4rem;}
+.exp-tag{
+  padding:.22rem .65rem;border-radius:50px;
+  font-size:.56rem;font-weight:600;letter-spacing:.08em;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  color:var(--muted);transition:color .2s,border-color .2s;
+}
+.exp-card:hover .exp-tag{color:var(--text);border-color:rgba(255,255,255,.14);}
+
+.exp-right{
+  padding:2.5rem 2.5rem 2.5rem 2rem;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:1;
+}
+.exp-li{list-style:none;width:100%;}
+.exp-li li{
+  font-size:.8rem;color:var(--muted);line-height:1.85;
+  padding:.6rem 0 .6rem 1.5rem;position:relative;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  transition:color .2s;
+}
+.exp-li li:last-child{border-bottom:none;}
+.exp-li li::before{
+  content:'▹';position:absolute;left:0;top:.65rem;
+  color:var(--c1);font-size:.7rem;
+}
+.exp-card:hover .exp-li li{color:rgba(240,239,255,.7);}
+.exp-li li b{color:var(--c4);font-weight:700;}
+.exp-badge{
+  display:inline-block;padding:.1rem .5rem;border-radius:4px;
+  font-size:.7rem;font-weight:700;
+  background:rgba(0,245,212,.1);color:var(--c4);margin:0 2px;
+}
+.exp-badge.pink{background:rgba(255,60,172,.1);color:var(--c1);}
+
+@media(max-width:900px){
+  .exp-card{grid-template-columns:1fr;}
+  .exp-left{border-right:none;border-bottom:1px solid rgba(255,255,255,.07);}
+}
+
+/* ===== PROJECTS ===== */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.5rem;}
+.proj-card{
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:24px;padding:2rem;
+  position:relative;overflow:hidden;
+  transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s,border-color .4s;
+  cursor:none;
+}
+.proj-card:nth-child(1):hover{border-color:rgba(255,60,172,.35);box-shadow:0 20px 60px rgba(255,60,172,.12);}
+.proj-card:nth-child(2):hover{border-color:rgba(0,245,212,.35);box-shadow:0 20px 60px rgba(0,245,212,.12);}
+.proj-card:nth-child(3):hover{border-color:rgba(43,134,197,.35);box-shadow:0 20px 60px rgba(43,134,197,.12);}
+.proj-card:nth-child(4):hover{border-color:rgba(255,225,77,.35);box-shadow:0 20px 60px rgba(255,225,77,.12);}
+.proj-card:nth-child(5):hover{border-color:rgba(120,75,160,.5);box-shadow:0 20px 60px rgba(120,75,160,.15);}
+.proj-card:nth-child(6):hover{border-color:rgba(0,245,212,.35);box-shadow:0 20px 60px rgba(0,245,212,.12);}
+.proj-card:hover{transform:translateY(-12px) scale(1.01);}
+.proj-num{
+  font-family:var(--display);font-size:5rem;line-height:1;
+  position:absolute;top:1rem;right:1.5rem;
+  background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.proj-shimmer{
+  position:absolute;inset:-1px;border-radius:24px;
+  background:linear-gradient(135deg,transparent 40%,rgba(255,60,172,.05) 60%,transparent 80%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.proj-card:hover .proj-shimmer{opacity:1;}
+.proj-title{
+  font-family:var(--display);font-size:1.5rem;
+  color:var(--text);margin-bottom:.8rem;
+  max-width:75%;line-height:1.2;
+}
+.proj-desc{font-size:.75rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:.4rem;}
+.ptag{
+  padding:.25rem .7rem;border-radius:50px;
+  font-size:.58rem;font-weight:600;letter-spacing:.08em;
+}
+
+/* ===== EDUCATION ===== */
+.edu-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+.edu-main{
+  background:linear-gradient(135deg,rgba(255,60,172,.08),rgba(43,134,197,.08));
+  border:1px solid rgba(255,60,172,.15);
+  border-radius:24px;padding:2.5rem;
+  position:relative;overflow:hidden;
+}
+.edu-main::before{
+  content:'';position:absolute;top:-50%;right:-50%;
+  width:200%;height:200%;
+  background:radial-gradient(circle at 70% 30%,rgba(255,60,172,.06),transparent 60%);
+  pointer-events:none;
+}
+.edu-uni-badge{
+  display:inline-block;padding:.4rem 1rem;border-radius:50px;
+  background:rgba(0,245,212,.08);border:1px solid rgba(0,245,212,.2);
+  font-size:.6rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--c4);margin-bottom:1.5rem;
+}
+.edu-degree{
+  font-family:var(--display);font-size:2rem;color:var(--text);
+  letter-spacing:.02em;line-height:1.2;margin-bottom:.5rem;
+}
+.edu-meta{font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;}
+.edu-gpa{
+  font-family:var(--display);font-size:4rem;
+  background:linear-gradient(135deg,var(--c4),var(--c3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;
+}
+.edu-gpa-label{font-size:.65rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-top:.3rem;}
+
+.pubs-wrap{}
+.pub-card{
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:16px;padding:1.5rem;
+  margin-bottom:1rem;
+  transition:transform .3s,border-color .3s;
+}
+.pub-card:hover{transform:translateX(6px);border-color:rgba(255,225,77,.2);}
+.pub-yr{
+  font-size:.58rem;font-weight:700;letter-spacing:.15em;
+  color:var(--c5);text-transform:uppercase;margin-bottom:.6rem;
+}
+.pub-t{font-size:.8rem;line-height:1.6;color:var(--text);margin-bottom:.4rem;}
+.pub-s{
+  font-size:.6rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+/* ===== CONTACT ===== */
+#contact{
+  padding:8rem 3rem;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,60,172,.08),transparent 70%);
+  text-align:center;position:relative;
+}
+.contact-title{
+  font-family:var(--display);
+  font-size:clamp(3rem,8vw,7rem);
+  line-height:.9;letter-spacing:.01em;margin-bottom:1.5rem;
+}
+.contact-title .t1{
+  display:block;color:var(--text);
+}
+.contact-title .t2{
+  display:block;
+  background:linear-gradient(135deg,var(--c1),var(--c3),var(--c4));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.contact-sub{font-size:.88rem;color:var(--muted);max-width:460px;margin:0 auto 3.5rem;line-height:1.8;}
+.contact-row{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;}
+.c-card{
+  padding:1.8rem 2.2rem;border-radius:20px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  text-decoration:none;display:flex;flex-direction:column;
+  align-items:center;gap:8px;min-width:160px;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.c-card:hover{transform:translateY(-8px);border-color:var(--c1);box-shadow:0 20px 40px rgba(255,60,172,.12);}
+.c-ico{font-size:1.6rem;line-height:1;}
+.c-lbl{font-size:.55rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+.c-val{font-size:.7rem;font-weight:600;color:var(--text);}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:2rem 3rem;border-top:1px solid rgba(255,255,255,.05);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:.6rem;color:var(--muted);letter-spacing:.1em;
+}
+.footer-glow{
+  background:linear-gradient(135deg,var(--c1),var(--c4));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-weight:700;
+}
+
+/* ===== SCROLL REVEAL ===== */
+.sr{opacity:0;transform:translateY(50px) scale(.97);
+  transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);}
+.sr.vis{opacity:1;transform:translateY(0) scale(1);}
+.sr.from-left{transform:translateX(-50px);}
+.sr.from-left.vis{transform:translateX(0);}
+.sr.from-right{transform:translateX(50px);}
+.sr.from-right.vis{transform:translateX(0);}
+.sr.zoom{transform:scale(.8);}
+.sr.zoom.vis{transform:scale(1);}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+
+/* ===== TICKER ===== */
+.ticker-wrap{
+  background:rgba(255,60,172,.07);border-top:1px solid rgba(255,60,172,.1);
+  border-bottom:1px solid rgba(255,60,172,.1);
+  padding:.7rem 0;overflow:hidden;white-space:nowrap;
+}
+.ticker-inner{
+  display:inline-flex;gap:0;
+  animation:ticker 25s linear infinite;
+}
+.ticker-inner span{
+  font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);padding:0 2rem;
+}
+.ticker-inner span.hi{color:var(--c1);}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links{display:none;}
+  #hero,.section{padding-left:1.5rem;padding-right:1.5rem;}
+  #hero{padding-top:5rem;}
+  .about-wrap,.edu-wrap{grid-template-columns:1fr;}
+  .about-visual{height:260px;}
+  .hero-stats{flex-wrap:wrap;gap:1.5rem;}
+  footer{flex-direction:column;gap:.5rem;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur2"></div>
+<div id="prog"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NR</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-badge"><div class="badge-dot"></div>Open to Work</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-blob blob1"></div>
+  <div class="hero-blob blob2"></div>
+  <div class="hero-blob blob3"></div>
+  <div class="shape shape-ring"></div>
+  <div class="shape shape-ring2"></div>
+  <div class="shape shape-sq"></div>
+
+  <!-- LEFT -->
+  <div class="hero-left">
+    <div class="hero-eyebrow"><div class="hero-eyebrow-line"></div>Software Quality Assurance Engineer</div>
+    <h1 class="hero-h1">
+      <span class="word1">Nabil</span>
+      <span class="word2">Rayhan</span>
+    </h1>
+    <p class="hero-sub">
+      Turning chaos into <strong>confidence</strong>. I build test ecosystems that scale — from banking systems in Malaysia to 10k-user platforms in Bangladesh. Cypress · Jest · Selenium · CI/CD · REST APIs.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-glow"><span>Let's Connect →</span></a>
+      <a href="#projects" class="btn-outline">See My Work</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-n" data-target="100" data-suffix="+">0</span><span class="hstat-l">Test Cases</span></div>
+      <div class="hstat"><span class="hstat-n" data-target="54" data-suffix="+">0</span><span class="hstat-l">Bugs Filed</span></div>
+      <div class="hstat"><span class="hstat-n" data-target="92" data-suffix="%">0</span><span class="hstat-l">Coverage</span></div>
+      <div class="hstat"><span class="hstat-n" data-target="30" data-suffix="%">0</span><span class="hstat-l">Faster Releases</span></div>
+    </div>
+  </div>
+
+  <!-- RIGHT INTERACTIVE PANEL -->
+  <div class="hero-right">
+    <div class="sqa-panel" id="sqaPanel">
+
+      <!-- Rings -->
+      <div class="sqa-ring ring1"></div>
+      <div class="sqa-ring ring2"></div>
+      <div class="sqa-ring ring3"></div>
+
+      <!-- Central orb -->
+      <div class="sqa-orb">
+        <div class="orb-pct" id="orbPct">92%</div>
+        <div class="orb-label">COVERAGE</div>
+      </div>
+
+      <!-- Orbit chips on ring1 (r=110px) -->
+      <div class="orbit-node" style="animation:orb1 12s linear infinite;">
+        <div class="orbit-chip" style="top:-110px;left:0;background:rgba(255,60,172,.15);border-color:rgba(255,60,172,.3);color:var(--c1);">Cypress</div>
+      </div>
+      <div class="orbit-node" style="animation:orb1 12s linear infinite;animation-delay:-6s;">
+        <div class="orbit-chip" style="top:-110px;left:0;background:rgba(43,134,197,.12);border-color:rgba(43,134,197,.25);color:var(--c3);">Selenium</div>
+      </div>
+
+      <!-- Orbit chips on ring2 (r=160px) -->
+      <div class="orbit-node" style="animation:orb2 18s linear infinite;">
+        <div class="orbit-chip" style="top:-160px;left:0;background:rgba(0,245,212,.1);border-color:rgba(0,245,212,.25);color:var(--c4);">Jest</div>
+      </div>
+      <div class="orbit-node" style="animation:orb2 18s linear infinite;animation-delay:-6s;">
+        <div class="orbit-chip" style="top:-160px;left:0;background:rgba(255,225,77,.08);border-color:rgba(255,225,77,.2);color:var(--c5);">Postman</div>
+      </div>
+      <div class="orbit-node" style="animation:orb2 18s linear infinite;animation-delay:-12s;">
+        <div class="orbit-chip" style="top:-160px;left:0;background:rgba(120,75,160,.15);border-color:rgba(120,75,160,.3);color:#B47EFF;">JIRA</div>
+      </div>
+
+      <!-- Orbit chips on ring3 (r=215px) -->
+      <div class="orbit-node" style="animation:orb3 28s linear infinite;">
+        <div class="orbit-chip" style="top:-215px;left:0;">CI/CD</div>
+      </div>
+      <div class="orbit-node" style="animation:orb3 28s linear infinite;animation-delay:-9s;">
+        <div class="orbit-chip" style="top:-215px;left:0;color:var(--c4);">REST API</div>
+      </div>
+      <div class="orbit-node" style="animation:orb3 28s linear infinite;animation-delay:-18s;">
+        <div class="orbit-chip" style="top:-215px;left:0;color:var(--c1);">GitHub Actions</div>
+      </div>
+
+      <!-- Floating metric cards -->
+      <div class="sqa-metric" style="top:18px;left:10px;animation-delay:.5s;">
+        <div class="sm-val" style="background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">30%</div>
+        <div class="sm-lbl">Faster Releases</div>
+      </div>
+      <div class="sqa-metric" style="bottom:20px;left:20px;animation-delay:1.5s;">
+        <div class="sm-val" style="background:linear-gradient(135deg,var(--c4),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">54+</div>
+        <div class="sm-lbl">Bugs Filed</div>
+      </div>
+      <div class="sqa-metric" style="bottom:60px;right:0;animation-delay:2.5s;">
+        <div class="sm-val" style="background:linear-gradient(135deg,var(--c5),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">99.9%</div>
+        <div class="sm-lbl">Deploy Uptime</div>
+      </div>
+
+      <!-- Floating code snippet -->
+      <div class="code-card">
+        <div><span class="ck">cy</span>.<span class="cc">get</span>(<span class="cv">'[data-cy=btn]'</span>)</div>
+        <div>&nbsp;&nbsp;.<span class="cc">click</span>()</div>
+        <div>&nbsp;&nbsp;.<span class="cc">should</span>(<span class="cv">'exist'</span>)</div>
+        <div><span class="ck">expect</span>(res).<span class="cc">toBe</span>(<span class="cn">200</span>)</div>
+        <div style="margin-top:.4rem;color:rgba(0,245,212,.5);font-size:.52rem;">✓ 50 tests passing</div>
+      </div>
+
+      <!-- Donut chart SVG -->
+      <div class="donut-wrap">
+        <svg viewBox="0 0 90 90" width="90" height="90">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="8"/>
+          <circle cx="45" cy="45" r="36" fill="none" stroke="url(#dg)" stroke-width="8"
+            stroke-dasharray="207" stroke-dashoffset="16"
+            stroke-linecap="round" transform="rotate(-90 45 45)">
+            <animate attributeName="stroke-dashoffset" from="207" to="16" dur="2s" begin="1.5s" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1"/>
+          </circle>
+          <defs>
+            <linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FF3CAC"/>
+              <stop offset="100%" stop-color="#00F5D4"/>
+            </linearGradient>
+          </defs>
+          <text x="45" y="48" text-anchor="middle" font-family="Bebas Neue" font-size="14" fill="white">92%</text>
+        </svg>
+      </div>
+
+      <!-- Scattered dots -->
+      <div class="sqa-dot" style="width:5px;height:5px;background:var(--c1);top:50px;right:60px;animation-delay:.3s;"></div>
+      <div class="sqa-dot" style="width:3px;height:3px;background:var(--c4);top:100px;right:30px;animation-delay:.7s;"></div>
+      <div class="sqa-dot" style="width:4px;height:4px;background:var(--c5);bottom:100px;left:60px;animation-delay:1.1s;"></div>
+      <div class="sqa-dot" style="width:6px;height:6px;background:var(--c3);bottom:50px;right:80px;animation-delay:1.6s;"></div>
+      <div class="sqa-dot" style="width:3px;height:3px;background:var(--c1);top:200px;left:30px;animation-delay:.9s;"></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="hi">Cypress</span><span>·</span><span>Jest</span><span>·</span>
+    <span class="hi">Selenium</span><span>·</span><span>Postman</span><span>·</span>
+    <span class="hi">GitHub Actions</span><span>·</span><span>JIRA</span><span>·</span>
+    <span class="hi">REST API</span><span>·</span><span>CI/CD</span><span>·</span>
+    <span class="hi">Cypress</span><span>·</span><span>Jest</span><span>·</span>
+    <span class="hi">Selenium</span><span>·</span><span>Postman</span><span>·</span>
+    <span class="hi">GitHub Actions</span><span>·</span><span>JIRA</span><span>·</span>
+    <span class="hi">REST API</span><span>·</span><span>CI/CD</span><span>·</span>
+    <span class="hi">Cypress</span><span>·</span><span>Jest</span><span>·</span>
+    <span class="hi">Selenium</span><span>·</span><span>Postman</span><span>·</span>
+    <span class="hi">GitHub Actions</span><span>·</span><span>JIRA</span><span>·</span>
+    <span class="hi">REST API</span><span>·</span><span>CI/CD</span><span>·</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="sec-label sr">About Me</div>
+  <div class="about-wrap">
+    <div class="about-visual sr zoom">
+      <div class="about-ring-outer"></div>
+      <div class="about-ring-inner"></div>
+      <div class="about-orbit">
+        <div class="orbit-dot" style="background:var(--c1);box-shadow:0 0 10px var(--c1);"></div>
+      </div>
+      <div class="about-orbit" style="animation-duration:22s;animation-direction:reverse;">
+        <div class="orbit-dot" style="background:var(--c4);box-shadow:0 0 10px var(--c4);top:auto;bottom:0;"></div>
+      </div>
+      <div class="about-center">NR</div>
+    </div>
+    <div class="about-info">
+      <div class="sec-title sr d1">Who I Am</div>
+      <p class="sr d2">I'm a <strong>Software QA Engineer</strong> who's shipped reliable software across banking, e-commerce, and event platforms. I've worked across Malaysia and Bangladesh, and I bring a research mindset — everything I test is measured, documented, and improved.</p>
+      <p class="sr d3">My engineering degree from <strong>UTM Malaysia</strong> (GPA 3.44) is backed by two published ML research papers. Quality isn't just my job — it's how I think.</p>
+      <div class="info-chips sr d4">
+        <span class="chip">📍 Bangladesh</span>
+        <span class="chip">🎓 UTM Malaysia</span>
+        <span class="chip">🧪 Agile / Scrum</span>
+        <span class="chip">💼 Open to Hire</span>
+        <span class="chip">🔬 ML Researcher</span>
+        <span class="chip">🌍 Remote OK</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section section-alt">
+  <div class="sec-label sr">What I Know</div>
+  <div class="sec-title sr d1">Skills & Stack</div>
+  <div class="skills-container">
+    <div class="skill-card sr d1">
+      <div class="sk-icon" style="background:rgba(255,60,172,.1);">🧪</div>
+      <div class="sk-title">Manual Testing</div>
+      <div class="sk-pills">
+        <span class="sk-pill pink-bg">Functional</span>
+        <span class="sk-pill pink-bg">Regression</span>
+        <span class="sk-pill pink-bg">Smoke</span>
+        <span class="sk-pill pink-bg">Sanity</span>
+        <span class="sk-pill pink-bg">UAT</span>
+        <span class="sk-pill pink-bg">Performance</span>
+        <span class="sk-pill pink-bg">Load Testing</span>
+      </div>
+    </div>
+    <div class="skill-card sr d2">
+      <div class="sk-icon" style="background:rgba(0,245,212,.08);">⚡</div>
+      <div class="sk-title">Automation</div>
+      <div class="sk-pills">
+        <span class="sk-pill teal-bg">Cypress</span>
+        <span class="sk-pill teal-bg">Selenium</span>
+        <span class="sk-pill teal-bg">Jest</span>
+        <span class="sk-pill teal-bg">Postman</span>
+        <span class="sk-pill teal-bg">REST API</span>
+        <span class="sk-pill teal-bg">CI/CD</span>
+        <span class="sk-pill teal-bg">GitHub Actions</span>
+      </div>
+    </div>
+    <div class="skill-card sr d3">
+      <div class="sk-icon" style="background:rgba(43,134,197,.1);">🛠</div>
+      <div class="sk-title">Tools</div>
+      <div class="sk-pills">
+        <span class="sk-pill blue-bg">JIRA</span>
+        <span class="sk-pill blue-bg">Zephyr</span>
+        <span class="sk-pill blue-bg">TestLink</span>
+        <span class="sk-pill blue-bg">Notion</span>
+        <span class="sk-pill blue-bg">Teams</span>
+      </div>
+    </div>
+      <div class="skill-card sr d3">
+      <div class="sk-icon" style="background:rgba(43,134,197,.1);">🛠</div>
+      <div class="sk-title">Tools</div>
+      <div class="sk-pills">
+        <span class="sk-pill blue-bg">JIRA</span>
+        <span class="sk-pill blue-bg">Zephyr</span>
+        <span class="sk-pill blue-bg">TestLink</span>
+        <span class="sk-pill blue-bg">Notion</span>
+        <span class="sk-pill blue-bg">Teams</span>
+      </div>
+    </div>
+      <div class="skill-card sr d3">
+      <div class="sk-icon" style="background:rgba(43,134,197,.1);">🛠</div>
+      <div class="sk-title">Tools</div>
+      <div class="sk-pills">
+        <span class="sk-pill blue-bg">JIRA</span>
+        <span class="sk-pill blue-bg">Zephyr</span>
+        <span class="sk-pill blue-bg">TestLink</span>
+        <span class="sk-pill blue-bg">Notion</span>
+        <span class="sk-pill blue-bg">Teams</span>
+      </div>
+    </div>
+    <div class="skill-card sr d4">
+      <div class="sk-icon" style="background:rgba(255,225,77,.07);">💻</div>
+      <div class="sk-title">Programming</div>
+      <div class="sk-pills">
+        <span class="sk-pill yellow-bg">JavaScript</span>
+        <span class="sk-pill yellow-bg">TypeScript</span>
+        <span class="sk-pill yellow-bg">Java</span>
+        <span class="sk-pill yellow-bg">HTML/CSS</span>
+        <span class="sk-pill yellow-bg">Angular</span>
+      </div>
+    </div>
+    <div class="skill-card sr d5">
+      <div class="sk-icon" style="background:rgba(120,75,160,.12);">🤖</div>
+      <div class="sk-title">Machine Learning</div>
+      <div class="sk-pills">
+        <span class="sk-pill purple-bg">Python</span>
+        <span class="sk-pill purple-bg">scikit-learn</span>
+        <span class="sk-pill purple-bg">Django</span>
+        <span class="sk-pill purple-bg">TensorFlow</span>
+        <span class="sk-pill purple-bg">PyTorch</span>
+        <span class="sk-pill purple-bg">MATLAB</span>
+      </div>
+    </div>
+    <div class="skill-card sr d6">
+      <div class="sk-icon" style="background:rgba(0,245,212,.08);">🌐</div>
+      <div class="sk-title">Frameworks</div>
+      <div class="sk-pills">
+        <span class="sk-pill teal-bg">Next.js</span>
+        <span class="sk-pill teal-bg">Supabase</span>
+        <span class="sk-pill teal-bg">Testing Library</span>
+        <span class="sk-pill teal-bg">E2E Testing</span>
+        <span class="sk-pill teal-bg">Cross-browser</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section" style="padding-left:3rem;padding-right:3rem;box-sizing:border-box;width:100%;">
+  <div class="sec-label sr">Work History</div>
+  <div class="sec-title sr d1">Experience</div>
+  <div class="exp-wrap">
+
+    <div class="exp-card sr">
+      <div class="exp-left">
+        <div>
+          <div class="exp-period">Jun – Sep 2025</div>
+          <div class="exp-role">SQA Engineer</div>
+          <div class="exp-co">The Attention Network<br>Bangladesh</div>
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">Next.js</span>
+          <span class="exp-tag">Supabase</span>
+          <span class="exp-tag">Cypress</span>
+          <span class="exp-tag">Jest</span>
+          <span class="exp-tag">CI/CD</span>
+          <span class="exp-tag">GitHub Actions</span>
+        </div>
+      </div>
+      <div class="exp-right">
+        <ul class="exp-li">
+          <li>Created <b>30+ test plans & bug reports</b> for Next.js & Supabase apps — <span class="exp-badge">100%</span> requirements coverage and <span class="exp-badge pink">25% fewer</span> escaped defects</li>
+          <li>Implemented <b>50+ automated tests</b> with Jest & Cypress using Testing Library — coverage jumped from <span class="exp-badge pink">65%</span> to <span class="exp-badge">92%</span></li>
+          <li>Configured GitHub Actions CI/CD pipelines for full test automation and quality gates — release cycles cut by <span class="exp-badge pink">30%</span>, deployment reliability at <span class="exp-badge">99.9%</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card sr d2">
+      <div class="exp-left">
+        <div>
+          <div class="exp-period">Jul 2023 – Nov 2024</div>
+          <div class="exp-role">Software Tester</div>
+          <div class="exp-co">Xover Consultancy Sdn Bhd<br>Malaysia</div>
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">JIRA</span>
+          <span class="exp-tag">Zephyr</span>
+          <span class="exp-tag">Chrome</span>
+          <span class="exp-tag">Firefox</span>
+          <span class="exp-tag">Safari</span>
+          <span class="exp-tag">Banking</span>
+          <span class="exp-tag">CASA</span>
+        </div>
+      </div>
+      <div class="exp-right">
+        <ul class="exp-li">
+          <li>Developed & maintained <b>30+ test scripts</b> (manual and automated) — leading to an <span class="exp-badge">80% increase</span> in system performance stability</li>
+          <li>Documented <b>60+ bugs</b> in JIRA & Zephyr; thorough cross-browser testing across Chrome, Firefox, Safari — <span class="exp-badge">40% better</span> compatibility coverage</li>
+          <li>Hands-on with core banking systems: deposits, accounts, transactions, <b>CASA workflows</b>, and <b>Online Account Opening (OAO)</b> modules end-to-end</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card sr d3">
+      <div class="exp-left">
+        <div>
+          <div class="exp-period">Sep 2022 – Mar 2024</div>
+          <div class="exp-role">Research Assistant</div>
+          <div class="exp-co">SE Research Group, UTM<br>Malaysia</div>
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">Python</span>
+          <span class="exp-tag">scikit-learn</span>
+          <span class="exp-tag">Django</span>
+          <span class="exp-tag">ML</span>
+          <span class="exp-tag">Linear Regression</span>
+        </div>
+      </div>
+      <div class="exp-right">
+        <ul class="exp-li">
+          <li>Built and trained a <b>linear regression model</b> using scikit-learn for student performance prediction with high accuracy</li>
+          <li>Implemented a <b>Calculate Prediction</b> dashboard page with user-friendly interface using <b>Django</b> as backend with custom ML features</li>
+          <li>Participated in brainstorming sessions and research discussions, contributing to two academic <b>publications</b> in ML and bioinformatics</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section section-alt">
+  <div class="sec-label sr">Selected Work</div>
+  <div class="sec-title sr d1">Projects</div>
+  <div class="projects-grid">
+
+    <div class="proj-card sr d1">
+      <div class="proj-shimmer"></div>
+      <div class="proj-num">01</div>
+      <div class="proj-title">Attention Event Ticketing Platform</div>
+      <div class="proj-desc">E2E automation for all ticket booking flows serving 10k+ users. 95%+ code coverage. Full payment flow testing — transactions, failures, refunds, retries.</div>
+      <div class="proj-tags">
+        <span class="ptag pink-bg">Cypress</span>
+        <span class="ptag teal-bg">Jest</span>
+        <span class="ptag blue-bg">CI/CD</span>
+        <span class="ptag yellow-bg">JIRA</span>
+      </div>
+    </div>
+
+    <div class="proj-card sr d2">
+      <div class="proj-shimmer"></div>
+      <div class="proj-num">02</div>
+      <div class="proj-title">Admin Panel & Validator App</div>
+      <div class="proj-desc">Dashboard metrics, chart, and report automation. Supabase data integrity checks. Regression testing ensuring zero regressions on admin updates.</div>
+      <div class="proj-tags">
+        <span class="ptag teal-bg">Cypress</span>
+        <span class="ptag teal-bg">Jest</span>
+        <span class="ptag blue-bg">Supabase</span>
+        <span class="ptag pink-bg">Regression</span>
+      </div>
+    </div>
+
+    <div class="proj-card sr d3">
+      <div class="proj-shimmer"></div>
+      <div class="proj-num">03</div>
+      <div class="proj-title">Squid Game Leaderboard Panel</div>
+      <div class="proj-desc">&gt;90% Jest coverage for business logic. Cypress real-time ranking verification — 100% data accuracy. E2E for Volunteer App. Integrated CI/CD pipeline.</div>
+      <div class="proj-tags">
+        <span class="ptag yellow-bg">Jest</span>
+        <span class="ptag teal-bg">Cypress</span>
+        <span class="ptag blue-bg">Real-time</span>
+      </div>
+    </div>
+
+    <div class="proj-card sr d4">
+      <div class="proj-shimmer"></div>
+      <div class="proj-num">04</div>
+      <div class="proj-title">Agro Bank System</div>
+      <div class="proj-desc">Complex database testing across multiple modules. CASA workflows + OAO E2E. Data integrity, relationships, queries, and transactions validated.</div>
+      <div class="proj-tags">
+        <span class="ptag yellow-bg">Database</span>
+        <span class="ptag pink-bg">CASA</span>
+        <span class="ptag blue-bg">OAO</span>
+        <span class="ptag teal-bg">E2E</span>
+      </div>
+    </div>
+
+    <div class="proj-card sr d5">
+      <div class="proj-shimmer"></div>
+      <div class="proj-num">05</div>
+      <div class="proj-title">MSU E-Commerce Platform</div>
+      <div class="proj-desc">Angular responsive platform for member, merchant, admin, driver roles. E2E with Cypress across all user types. Payment integration validated.</div>
+      <div class="proj-tags">
+        <span class="ptag purple-bg">Angular</span>
+        <span class="ptag teal-bg">Cypress</span>
+        <span class="ptag pink-bg">Payment</span>
+      </div>
+    </div>
+
+    <div class="proj-card sr d6">
+      <div class="proj-shimmer"></div>
+      <div class="proj-num">06</div>
+      <div class="proj-title">T&C Coffeebean Tealeaf</div>
+      <div class="proj-desc">Jest unit tests for order processing, delivery, payments, cart, product filters. Detailed test plans, JIRA bug tracking, system reliability ensured.</div>
+      <div class="proj-tags">
+        <span class="ptag teal-bg">Jest</span>
+        <span class="ptag blue-bg">JIRA</span>
+        <span class="ptag yellow-bg">Unit Testing</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="section">
+  <div class="sec-label sr">Academic Background</div>
+  <div class="sec-title sr d1">Education & Research</div>
+  <div class="edu-wrap">
+    <div class="edu-main sr zoom">
+      <div class="edu-uni-badge">Universiti Teknologi Malaysia</div>
+      <div class="edu-degree">Bachelor of Software Engineering</div>
+      <div class="edu-meta">Oct 2020 — Nov 2024 · Kuala Lumpur, Malaysia</div>
+      <div class="edu-gpa">3.44</div>
+      <div class="edu-gpa-label">/ 4.0 GPA</div>
+    </div>
+    <div class="pubs-wrap">
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--c1);margin-bottom:1.2rem;" class="sr d2">// Publications</div>
+      <div class="pub-card sr d3">
+        <div class="pub-yr">April 2024 · Published</div>
+        <div class="pub-t">Classifying Virus Strain Using a Machine Learning Model Based on Subcellular Localization Data</div>
+        <div class="pub-s" style="color:var(--c4);">✓ Published</div>
+      </div>
+      <div class="pub-card sr d4">
+        <div class="pub-yr">2024 · Ongoing</div>
+        <div class="pub-t">Student Performance Analysis Dashboard Using Machine Learning Algorithm</div>
+        <div class="pub-s" style="color:var(--c5);">⟳ In Progress</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-title sr zoom">
+    <span class="t1">Let's Build</span>
+    <span class="t2">Quality Together</span>
+  </div>
+  <p class="contact-sub sr d2">Open to full-time SQA roles — remote or on-site. Let's talk about shipping software people can trust.</p>
+  <div class="contact-row">
+    <a href="mailto:nabilrayhan17@gmail.com" class="c-card sr d2">
+      <div class="c-ico">✉️</div>
+      <div class="c-lbl">Email</div>
+      <div class="c-val">nabilrayhan17@gmail.com</div>
+    </a>
+    <a href="tel:01768360928" class="c-card sr d3">
+      <div class="c-ico">📱</div>
+      <div class="c-lbl">Phone</div>
+      <div class="c-val">01768360928</div>
+    </a>
+    <a href="https://linkedin.com/in/nabil-rayhan" target="_blank" class="c-card sr d4">
+      <div class="c-ico">💼</div>
+      <div class="c-lbl">LinkedIn</div>
+      <div class="c-val">nabil-rayhan</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Nabil Rayhan</span>
+  <span class="footer-glow">Made with precision & purpose</span>
+</footer>
+
+<script>
+/* ——— CURSOR ——— */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function lag(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+  cur2.style.left=rx+'px';cur2.style.top=ry+'px';
+  requestAnimationFrame(lag);})();
+
+/* ——— PROGRESS BAR ——— */
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  document.getElementById('prog').style.width=
+    (window.scrollY/(h.scrollHeight-h.clientHeight)*100)+'%';
+});
+
+/* ——— COUNT UP ——— */
+function countUp(el,target,suffix,dur=1800){
+  let s=0,step=target/(dur/16);
+  const t=setInterval(()=>{
+    s+=step;if(s>=target){el.textContent=target+suffix;clearInterval(t);return;}
+    el.textContent=Math.floor(s)+suffix;
+  },16);
+}
+const heroObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){
+    setTimeout(()=>{
+      document.querySelectorAll('.hstat-n').forEach(el=>{
+        countUp(el,+el.dataset.target,el.dataset.suffix);
+      });
+    },800);
+    heroObs.disconnect();
+  }
+},{threshold:.3});
+heroObs.observe(document.getElementById('hero'));
+
+/* ——— SCROLL REVEAL ——— */
+const sr=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.12});
+document.querySelectorAll('.sr').forEach(el=>sr.observe(el));
+
+/* ——— 3D TILT ON CARDS ——— */
+document.querySelectorAll('.proj-card,.skill-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(600px) rotateY(${x*12}deg) rotateX(${-y*10}deg) translateY(-8px) scale(1.02)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+  });
+});
+
+/* ——— MAGNETIC BUTTONS ——— */
+document.querySelectorAll('.btn-glow,.btn-outline').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const x=(e.clientX-r.left-r.width/2)*.25;
+    const y=(e.clientY-r.top-r.height/2)*.25;
+    btn.style.transform=`translate(${x}px,${y}px) translateY(-3px)`;
+  });
+  btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
+});
+
+/* ——— SQA PANEL MOUSE PARALLAX ——— */
+const panel=document.getElementById('sqaPanel');
+if(panel){
+  document.addEventListener('mousemove',e=>{
+    const cx=window.innerWidth/2,cy=window.innerHeight/2;
+    const dx=(e.clientX-cx)/cx,dy=(e.clientY-cy)/cy;
+    panel.style.transform=`rotateY(${dx*8}deg) rotateX(${-dy*6}deg)`;
+  });
+  document.addEventListener('mouseleave',()=>{panel.style.transform='';});
+}
+
+/* ——— ORB CYCLE TEXT ——— */
+const orbStats=[
+  {val:'92%',lbl:'COVERAGE'},
+  {val:'80+',lbl:'TEST CASES'},
+  {val:'99.9%',lbl:'UPTIME'},
+  {val:'30%',lbl:'FASTER'},
+  {val:'60+',lbl:'BUGS FILED'},
+];
+let orbIdx=0;
+const orbPctEl=document.getElementById('orbPct');
+if(orbPctEl){
+  setInterval(()=>{
+    orbIdx=(orbIdx+1)%orbStats.length;
+    orbPctEl.style.opacity='0';orbPctEl.style.transform='scale(.7)';
+    orbPctEl.style.transition='all .3s';
+    const lbl=orbPctEl.nextElementSibling;
+    setTimeout(()=>{
+      orbPctEl.textContent=orbStats[orbIdx].val;
+      lbl.textContent=orbStats[orbIdx].lbl;
+      orbPctEl.style.opacity='1';orbPctEl.style.transform='scale(1)';
+    },300);
+  },2200);
+}
+
+
+const expObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.15});
+document.querySelectorAll('.exp-card').forEach(c=>expObs.observe(c));
+</script>
+</body>
+</html>
